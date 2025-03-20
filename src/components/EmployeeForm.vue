@@ -139,10 +139,9 @@ const goBack = () => {
   showDetails.value = false;
 };
 onMounted(() => {
-  if(JSON.parse(localStorage.getItem('employeeDetails')).length>0) {
+  if(JSON.parse(localStorage.getItem('employeeDetails'))?.length>0) {
     employees.value = JSON.parse(localStorage.getItem('employeeDetails'))
   }
-  console.log(JSON.parse(localStorage.getItem('employeeDetails')));
 })
 </script>
 
