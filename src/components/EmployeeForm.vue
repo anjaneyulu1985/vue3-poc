@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const showAddForm = ref(false);
 const showDetails = ref(false);
@@ -100,6 +100,7 @@ const saveEmployee = () => {
       skills: newEmployee.value.skills,
       about: newEmployee.value.about
     });
+    localStorage.setItem("employeeDetails", JSON.stringify(employees.value))
   }
   newEmployee.value = { name: '', lastname: '', position: '', skills: [], about: '' };
   selectedEmployee.value = null;
@@ -137,6 +138,12 @@ const goBack = () => {
   selectedEmployee.value = null;
   showDetails.value = false;
 };
+onMounted(() => {
+  if(JSON.parse(localStorage.getItem('employeeDetails')).length>0) {
+    employees.value = JSON.parse(localStorage.getItem('employeeDetails'))
+  }
+  console.log(JSON.parse(localStorage.getItem('employeeDetails')));
+})
 </script>
 
 <style scoped>
