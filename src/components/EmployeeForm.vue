@@ -11,7 +11,7 @@
            :class="['employee-card', employee.available ? 'available' : 'unavailable']">
         <h3 class="employee-name">{{ employee.name }}</h3>
         <p class="employee-position">{{ employee.position }}</p>
-        <p class="employee-description">{{ employee.description }}</p>
+        <p class="employee-description">{{ employee.about }}</p>
         <button @click="viewDetails(employee)" class="details-button">View Details</button>
       </div>
       <button class="add-button" @click="showAddForm = true">Add</button>
@@ -89,6 +89,17 @@ const removeSkill = (index) => {
 const saveEmployee = () => {
   if (selectedEmployee.value) {
     Object.assign(selectedEmployee.value, newEmployee.value);
+    if(JSON.parse(localStorage.getItem('employeeDetails'))?.length>0) {
+      employees.value = JSON.parse(localStorage.getItem('employeeDetails'));
+      employees.value.map((emp, index)=> {  
+        console.log(selectedEmployee.value.id, emp.id)
+        if(emp.id == selectedEmployee.value.id) {
+          employees.value[index] = selectedEmployee.value;
+        }
+      })
+      localStorage.setItem("employeeDetails", JSON.stringify(employees.value))
+      console.log(employees.value,"updated details")
+    }
   } else {
     employees.value.push({
       id: employees.value.length + 1,
@@ -114,12 +125,14 @@ const viewDetails = (employee) => {
 
 const editEmployee = (employee) => {
   newEmployee.value = { ...employee };
+  console.log(newEmployee.value,"new employee");
   showAddForm.value = true;
   showDetails.value = false;
 };
 
 const deleteEmployee = (id) => {
   employees.value = employees.value.filter(employee => employee.id !== id);
+  localStorage.setItem("employeeDetails", JSON.stringify(employees.value))
   selectedEmployee.value = null;
   showDetails.value = false;
 };
