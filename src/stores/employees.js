@@ -5,6 +5,7 @@ export const useEmployeeStore = defineStore('employees', () => {
   const employees = ref(JSON.parse(localStorage.getItem('employees')) || [])
 
   function saveToLocalStorage() {
+    console.log('Value:',employees.value)
     localStorage.setItem('employees', JSON.stringify(employees.value))
   }
 
